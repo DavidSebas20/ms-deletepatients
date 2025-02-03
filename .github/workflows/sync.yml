@@ -1,4 +1,4 @@
-name: Sync ms-deletepatient to Domain Repository
+name: Sync ms-deletepatients to Domain Repository
 on:
   push:
     branches:
@@ -12,11 +12,12 @@ jobs:
       - name: Checkout microservice repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
 
       - name: Get latest commit message
         id: commit_message
         run: |
+          # Obtener el mensaje del último commit y escaparlo
           COMMIT_MSG=$(git log -1 --pretty=%B | sed 's/[\/&]/\\&/g' | tr '\n' ' ')
           echo "COMMIT_MSG=$COMMIT_MSG" >> $GITHUB_ENV
 
@@ -49,9 +50,9 @@ jobs:
 
       - name: Copy microservice to domain repository
         run: |
-          rm -rf domain_repo/ms-deletepatient
-          mkdir -p domain_repo/ms-deletepatient
-          rsync -av --exclude='.git' . domain_repo/ms-deletepatient/
+          rm -rf domain_repo/ms-deletepatients
+          mkdir -p domain_repo/ms-deletepatients
+          rsync -av --exclude='.git' --exclude='domain_repo' . domain_repo/ms-deletepatients/
 
       - name: Commit and push changes
         run: |
