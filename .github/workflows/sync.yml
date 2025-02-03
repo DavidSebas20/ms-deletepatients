@@ -17,7 +17,7 @@ jobs:
       - name: Get latest commit message
         id: commit_message
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
+          COMMIT_MSG=$(git log -1 --pretty=%B | sed 's/[\/&]/\\&/g' | tr '\n' ' ')
           echo "COMMIT_MSG=$COMMIT_MSG" >> $GITHUB_ENV
 
       - name: Checkout domain repository
