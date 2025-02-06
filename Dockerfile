@@ -1,35 +1,29 @@
-# Use a base image with JDK 21
-FROM openjdk:21-jdk-slim as build
+# Stage 1: Build the project with Maven
+FROM maven:3.9-eclipse-temurin-21 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the pom.xml file
+COPY pom.xml .
+
+# Download dependencies (without compiling the code yet)
+RUN mvn dependency:go-offline
+
+# Copy the application source code
+COPY src ./src
+
+# Compile and package the application
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create the final image
+FROM eclipse-temurin:21-jre
 
 # Set the working directory
 WORKDIR /app
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven
+# Copy the generated JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Copy pom.xml and download dependencies
-COPY pom.xml .
-
-# Run mvn dependency:go-offline to download dependencies
-RUN mvn dependency:go-offline
-
-# Copy source code and run the build
-COPY src /app/src
-
-# Run Maven to build the project and create the JAR file
-RUN mvn clean package -DskipTests
-
-# Multi-stage build to reduce final image size
-FROM openjdk:21-jdk-slim
-
-WORKDIR /app
-
-# Copy the JAR file from the build stage
-COPY --from=build /app/target/deletepatients-0.0.1-SNAPSHOT.jar /app/deletepatients.jar
-
-
-
-# Run the Spring Boot app
-CMD ["java", "-jar", "deletepatients.jar"]
-
-
+# Define the command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
