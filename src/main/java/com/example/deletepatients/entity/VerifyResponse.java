@@ -1,15 +1,8 @@
 package com.example.deletepatients.entity;
 
 public class VerifyResponse {
-    private boolean match;
+    private boolean valid; // Cambiar 'match' por 'valid'
 
-    public VerifyResponse() {}
-
-    public boolean isMatch() {
-        return match;
-    }
-
-    public void setMatch(boolean match) {
-        this.match = match;
-    }
+    public boolean isValid() { return valid; }
+    public void setValid(boolean valid) { this.valid = valid; }
 }

@@ -41,8 +41,7 @@ public class PatientService {
         try {
             HttpEntity<VerifyRequest> request = new HttpEntity<>(verifyRequest);
             ResponseEntity<VerifyResponse> response = restTemplate.postForEntity(PASSWORD_VERIFY_URL, request, VerifyResponse.class);
-
-            return response.getBody() != null && response.getBody().isMatch();
+            return response.getBody() != null && response.getBody().isValid();
         } catch (Exception e) {
 
             e.printStackTrace();
