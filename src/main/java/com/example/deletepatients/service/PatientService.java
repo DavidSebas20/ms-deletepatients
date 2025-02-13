@@ -15,7 +15,7 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    @Value("${password.verify.url}")
+    @Value("${verify.service.url}")
     private String PASSWORD_VERIFY_URL;
 
 
