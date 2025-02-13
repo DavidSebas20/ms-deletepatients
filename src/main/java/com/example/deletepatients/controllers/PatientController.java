@@ -27,4 +27,9 @@ public class PatientController {
             return ResponseEntity.status(403).build();
         }
     }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Healthy");
+    }
 }
