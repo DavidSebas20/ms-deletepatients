@@ -3,6 +3,7 @@ package com.example.deletepatients.service;
 import com.example.deletepatients.entity.*;
 import com.example.deletepatients.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    private static final String PASSWORD_VERIFY_URL = "http://localhost:8080/verify";
+    @Value("${password.verify.url}")
+    private String PASSWORD_VERIFY_URL;
 
 
     public boolean deletePatient(Long id, String password) {
